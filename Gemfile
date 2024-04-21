@@ -45,6 +45,8 @@ end
 
 group :development, :test do
   gem "rspec-rails", "~> 6.1.2"
+
+  gem "strong_migrations", "~> 1.8"
 end
 
 group :development do
