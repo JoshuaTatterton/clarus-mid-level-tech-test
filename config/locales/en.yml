@@ -45,5 +45,6 @@ en:
             stock:
               unavailable: is unavailable for requested product at the requested warehouse
               quantity_unavailable: has no quantity remaining to be dispatched
+              decrement_stock_failed: could not be decremented
             status:
               already_dispatched: already has been dispatched

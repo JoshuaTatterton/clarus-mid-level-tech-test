@@ -34,12 +34,19 @@ module Persisters
       UPDATE stocks
       SET quantity = quantity - 1
       WHERE id = %{stock_id}
+      RETURNING id
     SQL
 
     def decrement_stock_quantity!
       query = DECREMENT_STOCK_QUERY % { stock_id: @order.stock_id }
+      result = { "id" => nil }
 
-      return true if Order.connection.execute(query)
+      begin
+        result = Order.connection.select_one(query)
+      rescue
+      end
+
+      return true if result && result["id"] == @order.stock_id
 
       @order.errors.add(:stock, :decrement_stock_failed)
       raise ActiveRecord::Rollback

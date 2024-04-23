@@ -63,4 +63,26 @@ describe Persisters::DispatchOrder do
       end
     end
   end
+
+  describe "#decrement_stock_quantity!" do
+    context "when stock quantity is 0" do
+      it "cannot update to negative quantity" do
+        # Arrange
+        stock = Stock.create(quantity: 0, product: product, warehouse: warehouse)
+        order = Order.create(stock: stock)
+        persister = Persisters::DispatchOrder.new(order: order)
+
+        # Act
+        Order.transaction do
+          persister.send(:decrement_stock_quantity!)
+        end
+
+        # Assert
+        aggregate_failures do
+          expect(stock.reload.quantity).to eq(0)
+          expect(order.errors.attribute_names).to include(:stock)
+        end
+      end
+    end
+  end
 end

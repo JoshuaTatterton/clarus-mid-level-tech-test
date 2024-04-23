@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_20_214934) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_23_154333) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -38,6 +38,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_20_214934) do
     t.datetime "updated_at", null: false
     t.index ["product_id"], name: "index_stocks_on_product_id"
     t.index ["warehouse_id"], name: "index_stocks_on_warehouse_id"
+    t.check_constraint "quantity >= 0::numeric", name: "quantity_cannot_be_negative"
   end
 
   create_table "warehouses", force: :cascade do |t|
