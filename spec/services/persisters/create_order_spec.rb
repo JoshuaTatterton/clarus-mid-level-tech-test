@@ -81,23 +81,3 @@ describe Persisters::CreateOrder do
     end
   end
 end
-
-
-# context "when no stock is available" do
-#   it "exits with an error on the order" do
-#     # Arrange
-#     stock = Stock.create(quantity: 1, product: product, warehouse: warehouse)
-#     order = Order.new
-#     persister = Persisters::CreateOrder.new(order: order, product_id: product.id,  warehouse_id: warehouse.id)
-
-#     # Act
-#     result = persister.call
-
-#     # Assert
-#     aggregate_failures do
-#       expect(result).to be_falsey
-#       expect(order).not_to be_persisted
-#       expect(order.errors.attribute_names).to include(:stock)
-#     end
-#   end
-# end
