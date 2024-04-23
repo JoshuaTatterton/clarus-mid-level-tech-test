@@ -31,3 +31,20 @@
 
 en:
   hello: "Hello world"
+  controllers:
+    stock_balance_controller:
+      show:
+        warehouse_not_found: "Warehouse not found for: %{id}"
+        product_not_found: "Product not found for: %{id}"
+
+  activerecord:
+    errors:
+      models:
+        order:
+          attributes:
+            stock:
+              unavailable: is unavailable for requested product at the requested warehouse
+              quantity_unavailable: has no quantity remaining to be dispatched
+              decrement_stock_failed: could not be decremented
+            status:
+              already_dispatched: already has been dispatched
