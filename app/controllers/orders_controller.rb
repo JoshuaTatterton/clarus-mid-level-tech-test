@@ -29,6 +29,17 @@ class OrdersController < ApplicationController
     render json: @order
   end
 
+  # PATCH /dispatch_order/1
+  def update
+    order_dispatcher = Persisters::DispatchOrder.new(order: @order)
+
+    if order_dispatcher.call
+      render json: @order, location: @order
+    else
+      render json: @order.errors, status: :unprocessable_entity
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

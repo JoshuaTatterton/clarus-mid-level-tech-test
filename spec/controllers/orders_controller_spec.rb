@@ -102,4 +102,48 @@ describe StocksController, type: :request do
       end
     end
   end
+
+  describe "#update" do
+    context "when a valid order with stock is provided" do
+      it "updates the order status and decreases the stock quantity" do
+        # Arrange
+        stock = Stock.create(quantity: 5, product: product, warehouse: warehouse)
+        order = Order.create(stock: stock)
+
+        # Act
+        patch "/dispatch_order/#{order.id}"
+
+        # Assert
+        aggregate_failures do
+          expect(response.status).to eq(200)
+          expect(JSON.parse(response.body, symbolize_names: true)).to include(
+            id: order.id,
+            stock_id: stock.id,
+            status: "dispatched"
+          )
+          expect(stock.reload.quantity).to eq(4)
+        end
+      end
+    end
+
+    context "when an already dispatched order is provided" do
+      it "returns an error" do
+        # Arrange
+        stock = Stock.create(quantity: 5, product: product, warehouse: warehouse)
+        order = Order.create(stock: stock, status: :dispatched)
+
+        # Act
+        patch "/dispatch_order/#{order.id}"
+
+        # Assert
+        aggregate_failures do
+          expect(response.status).to eq(422)
+          expect(JSON.parse(response.body, symbolize_names: true)).to include(
+            status: ["already has been dispatched"]
+          )
+          expect(stock.reload.quantity).to eq(5)
+        end
+      end
+    end
+  end
 end
