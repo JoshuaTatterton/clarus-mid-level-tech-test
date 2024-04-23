@@ -8,6 +8,17 @@ class StocksController < ApplicationController
     render json: @stocks
   end
 
+  # POST /stocks
+  def create
+    @stock = Stock.new(stock_params)
+
+    if @stock.save
+      render json: @stock, status: :created, location: @stock
+    else
+      render json: @stock.errors, status: :unprocessable_entity
+    end
+  end
+
   # GET /stocks/1
   def show
     render json: @stock
